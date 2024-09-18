@@ -758,12 +758,10 @@ subroutine advect_scalar_x(scalar, hprev, uhr, uh_neglect, domore_u, Idt, is, ie
         do_i(i) = .false.
       endif
     enddo
-    do i=is,ie ; if (do_i(i)) then
-      if (Ihnew(i) > 0.0) then
-        scalar(i,j,k) = (scalar(i,j,k) * hlst(i) - &
-                         ((uhh(I)-haddE(i))*Tr_x(I) - &
-                          (uhh(I-1)+haddW(i))*Tr_x(I-1))) * Ihnew(i)
-      endif
+    do i=is,ie ; if ((do_i(i)) .and. (Ihnew(i) > 0.0)) then
+      scalar(i,j,k) = (scalar(i,j,k) * hlst(i) - &
+                       ((uhh(I)-haddE(i))*Tr_x(I) - &
+                        (uhh(I-1)+haddW(i))*Tr_x(I-1))) * Ihnew(i)
     endif ; enddo
 
   endif ; enddo ! End of j-loop.
@@ -930,12 +928,10 @@ subroutine advect_x(Tr, hprev, uhr, uh_neglect, domore_u, ntr, nL_max, Idt, is, 
       endif
     enddo
     do m=1,ntr ; do l=1,Tr(m)%nL
-      do i=is,ie ; if (do_i(i)) then
-        if (Ihnew(i) > 0.0) then
-          Tr(m)%t(i,j,k,l) = (Tr(m)%t(i,j,k,l) * hlst(i) - &
-                              ((uhh(I)-haddE(i))*Tr_x(I,l,m) - &
-                               (uhh(I-1)+haddW(i))*Tr_x(I-1,l,m))) * Ihnew(i)
-        endif
+      do i=is,ie ; if ((do_i(i)) .and. (Ihnew(i) > 0.0)) then
+        Tr(m)%t(i,j,k,l) = (Tr(m)%t(i,j,k,l) * hlst(i) - &
+                            ((uhh(I)-haddE(i))*Tr_x(I,l,m) - &
+                             (uhh(I-1)+haddW(i))*Tr_x(I-1,l,m))) * Ihnew(i)
       endif ; enddo
       ! Diagnostics
       if (associated(Tr(m)%ad4d_x)) then ; do i=is,ie ; if (do_i(i)) then
