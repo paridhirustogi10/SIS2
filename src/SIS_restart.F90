@@ -1077,7 +1077,7 @@ subroutine save_restart(directory, time, G, CS, IG, time_stamp)
 
   restartname = trim(CS%restartfile)
   !if (PRESENT(time_stamp)) restartname = trim(CS%restartfile)//trim(time_stamp)
-  if (PRESENT(time_stamp)) restartname =trim(time_stamp)//"."//trim(CS%restartfile)
+  if (PRESENT(time_stamp)) restartname = trim(time_stamp)//"."//trim(CS%restartfile)
   !liao modify to correct the restart file name from "ice_model.res.nc20180101.000000.nc" to be "20180101.000000ice_model.res.nc"
 
   if (present(IG)) then
@@ -1183,7 +1183,6 @@ subroutine save_restart(directory, time, G, CS, IG, time_stamp)
     enddo
 
     file_thread = SINGLE_FILE ; if (CS%parallel_restartfiles) file_thread = MULTIPLE
-    if (present(IG)) then
     if (present(IG)) then
       call create_file(IO_handle, trim(restartpath), vars, (next_var-start_var),&
                        fields, file_thread, dG=dG, checksums=check_val,extra_axes=extra_axes)
